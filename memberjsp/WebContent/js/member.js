@@ -19,7 +19,7 @@
 	if(sId == ""){
 		alert("먼저 아이디를 입력하세요");
 	}else{
-		window.open("checkId.jsp?id="+sId,"","width=300 height=100");
+		window.open("checkId.jsp?id="+sId,"","width=300 height=100 location=yes");
 		//http://localhost:8080/memberjsp/member/가 생략
 	}
  }
