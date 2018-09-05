@@ -23,7 +23,7 @@
     </td>
     
    </tr>
-   
+  aasdasd
    <tr>
    	<td>비밀번호</td>
    	<td><input type = "password" name = "password"></td>
