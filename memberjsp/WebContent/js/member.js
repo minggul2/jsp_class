@@ -19,7 +19,7 @@
 	if(sId == ""){
 		alert("먼저 아이디를 입력하세요");
 	}else{
-		
+		window.open("checkId.jsp","","width=300 height=100");
 	}
  }
  //모든 태그의 부모 Element
