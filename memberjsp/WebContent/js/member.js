@@ -19,7 +19,8 @@
 	if(sId == ""){
 		alert("먼저 아이디를 입력하세요");
 	}else{
-		window.open("checkId.jsp","","width=300 height=100");
+		window.open("checkId.jsp?id="+sId,"","width=300 height=100");
+		//http://localhost:8080/memberjsp/member/가 생략
 	}
  }
  //모든 태그의 부모 Element
