@@ -44,7 +44,7 @@ public static MemberDAO instance;
 		}
 	}
 	
-	public boolean checkId(String id) {
+	public boolean isExitsId(String id) {
 		getConnection();
 		boolean check = false;
 		
