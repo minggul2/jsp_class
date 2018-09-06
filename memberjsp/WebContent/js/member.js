@@ -35,5 +35,25 @@
 	  	opener.writeForm.pwd.focus();
 	  }
  
+ function checkPost(){
+	 window.open("checkPost.jsp", "", "width=500 height=500");
+	 
+ }
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  //모든 태그의 부모 Element
  
