@@ -68,7 +68,7 @@
    </tr>
    
    <tr>
-    <td><input type = "text" name = "addr1" id = "addr1" placeholder = "주소" readonly></td>
+    <td><input type = "text" name = "addr1" id = "addr1" placeholder = "주소" readonly width = "500"></td>
    </tr>
    
    <tr>

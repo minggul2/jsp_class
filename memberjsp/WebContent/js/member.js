@@ -36,11 +36,40 @@
 	  }
  
  function checkPost(){
-	 window.open("checkPost.jsp", "", "width=500 height=500");
+	 window.open("checkPost.jsp", "", "width=400 height=400 scrollbars=yes");
 	 
  }
-
  
+ function checkPostClose(zipcode, address){
+	 
+	 opener.writeForm.zipcode.value = zipcode;
+	 opener.writeForm.addr1.value = address;
+	 opener.writeForm.addr2.focus();
+	 window.close();		//3
+	 //		1. 우편번호 값 채우기
+	 //		2. 주소 채우기 address
+	 //		3. 창 끄기
+	 //		4. 상세주소에 포커스
+	 //		5.
+ }
+ 
+ function checkLogin(){
+	if(window.loginForm.id.value == ""){
+		alert("아이디를 입력하세요");	
+	}else if(window.loginForm.password.value == ""){
+		alert("비밀번호를 입력하세요");	
+	}else{
+		window.loginForm.submit();	
+	}
+}
+
+ function modify(id){
+	 location.href='modifyForm.jsp?id='+id;
+	 window.writeForm.id.value = id;
+	 
+	 
+ }
+ //location.href='modifyForm.jsp?id=<%=id %>'
  
  
  
