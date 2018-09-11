@@ -129,7 +129,7 @@ public static MemberDAO instance;
 		return list;
 	}
 	
-	public MemberDTO modifiyMember(String id) {
+	public MemberDTO getMember(String id) {
 		getConnection();
 		MemberDTO memberDTO = new MemberDTO();
 		String sql = "select * from member where id = ?";

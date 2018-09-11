@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +10,7 @@
 </head>
 <body>
  <h1 align = "center">회원가입</h1>
- <form name = "writeForm" method = "post" action = "/memberservlet/WriteServlet">
+ <form name = "writeForm" method = "post" action = "write.jsp">
   <table border = "1" align = "center" cellpadding = "5" cellspacing = "0" height = "10">
    <tr>
    	<td>이름</td>
@@ -19,6 +21,7 @@
     <td>아이디</td>
     <td>
     	<input type = "text" name = "id" size = "40">
+    	<input type = "hidden" name = "idCheck" value = "">
     	<input type = "button" value = "중복체크" onclick = "checkId()">
     </td>
     
@@ -78,11 +81,6 @@
    <tr align = "center">
    	<td colspan = "2"><input type = "button" value = "회원가입" onclick = "checkWrite()">
    	<input type = "reset" value = "다시작성"></td>
-   </tr>
-   
-   <tr>	
-    <input type = "image" src = "
-    .http://localhost:8080/memberservlet/image/tomcat.png" disabled/>
    </tr>
    
   </table>
