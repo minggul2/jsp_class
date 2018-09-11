@@ -7,7 +7,7 @@
 		alert("비밀번호를 입력하세요");
 	}else if(document.writeForm.password.value != document.writeForm.repassword.value){
 		alert("비밀번호가 일치하지 않습니다");
-	}else if(document.writeForm.idCheck.value === "" || document.writeForm.idCheck.value != document.writeForm.id.value){
+	}else if(document.writeForm.idCheck.value != document.writeForm.id.value){
 		alert("중복체크를 하세요");
 	}else{
 		document.writeForm.submit();	
