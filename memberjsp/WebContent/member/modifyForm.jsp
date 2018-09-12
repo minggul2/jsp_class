@@ -4,11 +4,14 @@
 <%@ page import = "memberjsp.dao.*" %>
 <%@ page import = "memberjsp.bean.*" %>
 <%
-	String id = request.getParameter("id");
-	
+	//String id = request.getParameter("id");
+	String id = (String)session.getAttribute("memId");	
+
 	MemberDTO memberDTO = new MemberDTO();
 	MemberDAO memberDAO = MemberDAO.getInstance();
 	memberDTO = memberDAO.getMember(id);
+	
+	
  %>
 <!DOCTYPE html>
 <html>

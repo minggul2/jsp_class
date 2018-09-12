@@ -164,9 +164,9 @@ public static MemberDAO instance;
 		return memberDTO;
 	}
 	
-	public String login(String id, String password) {
+	public MemberDTO login(String id, String password) {
 		getConnection();
-		String name = null;
+		MemberDTO memberDTO = new MemberDTO();
 		String sql = "select * from member where id = ? and password = ?";
 		
 		try {
@@ -175,10 +175,13 @@ public static MemberDAO instance;
 			pstmt.setString(2, password);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				name = rs.getString("name");
+				memberDTO.setName(rs.getString("name"));
+				memberDTO.setEmail1(rs.getString("email1"));
+				memberDTO.setEmail2(rs.getString("email2"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			memberDTO = null;
 		}finally {
 			try {
 				if(rs != null) rs.close();
@@ -188,8 +191,8 @@ public static MemberDAO instance;
 				e.printStackTrace();
 			}
 		}
-		System.out.println(name);
-		return name;
+		
+		return memberDTO;
 	}
 	
 	public int write(MemberDTO memberDTO) {
