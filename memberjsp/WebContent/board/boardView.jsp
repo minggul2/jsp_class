@@ -33,6 +33,7 @@
 		}
 	} */
 	
+	
 	Cookie[] cookies = request.getCookies();		//쿠키받아옴
 	Cookie cookie = null;							//쿠키참조변수 만듬
 	
@@ -42,7 +43,7 @@
 		for(int i = 0; i < cookies.length; i++){		//받아온 쿠키배열 for문
 			//if(cookies[i].getValue().equals(seq+"") && cookies[i].getComment().equals(id)){	//하나하나 비교하다가 쿠키이름이 글번호seq 일경우
 			//}
-			if(cookies[i].getName().equals(seq+"")){
+			if(cookies[i].getName().equals(id+seq+"")){
 				cookie = cookies[i];					//쿠키 생성 방지
 				break;
 			}
@@ -53,15 +54,16 @@
 	
 	if(cookie == null){								//받다온 쿠키가 없다면 (처음 조회할 경우)
 		//cookie = new Cookie("hit", seq+"");			//
-		cookie = new Cookie(seq+"", id);
+		cookie = new Cookie(id+seq+"", id);
 		cookie.setComment(id);
 		cookie.setMaxAge(5);
 		response.addCookie(cookie);
-		boardDAO.updateHit(seq);
+		boardDAO.hitUpdate(seq);
+		
 	}
 	
 	
-	BoardDTO boardDTO = boardDAO.getContent(seq);	
+	BoardDTO boardDTO = boardDAO.boardView(seq);	
 	
 	
 	
@@ -75,36 +77,30 @@
 <link rel = "stylesheet" href = "../css/board.css">
 </head>
 <body>
-	<table border = "0" cellpadding = "5" cellspacing = "0" frame = "hsides" rules ="rows" color = "red">
+	<table border = "0" cellpadding = "5" cellspacing = "0" frame = "hsides" rules ="rows" color = "red" align  ="center">
 		<tr>
-			<td colspan = "3"><h3>제목 <%=boardDTO.getSubject() %></h3></td>
+			<td width = "450" colspan = "3"><h3><%=boardDTO.getSubject() %></h3></td>
 		</tr>
 		
 		<tr>
-			<td>글번호 : <%=seq %></td>
-			<td>작성자 : <%=boardDTO.getId() %></td>
-			<td>조회수 : <%=boardDTO.getHit() %></td>
+			<td width = "150" align = "center">글번호 : <%=seq %></td>
+			<td width = "150" align = "center">작성자 : <%=boardDTO.getId() %></td>
+			<td width = "150" align = "center">조회수 : <%=boardDTO.getHit() %></td>
 		</tr>
 		
 		<tr>
-			<!--<td colspan = "3"><textarea cols = "30" rows = "10" readonly><%=boardDTO.getContent() %></textarea></td>-->
-			<td colspan = "3"><%=boardDTO.getContent() %></td>
+			<td height = "250" colspan = "3" valign = "top"><pre><%=boardDTO.getContent() %></pre></td>
 		</tr>
-		
-		<tr>
-			<td colspan = "3">
-				<input type = "button" value = "목록">
-			<%if(id.equals(boardDTO.getId())){ %>
-				<input type = "button" value = "글수정">
-				<input type = "button" value = "글삭제">
-			<%} %>
-			</td>
-		</tr>
-		
-	</table>	
-		
-	<%
-		//글수정 글삭제
-	%>
+	</table>
+	
+	<br>
+	<div align = "center">	
+	<input type = "button" value = "목록" onclick = "location.href = 'boardList.jsp?pg=<%=pg %>'">
+	<%if(id.equals(boardDTO.getId())){ %>
+		<input type = "button" value = "글수정" onclick = "location.href = 'boardModifyForm.jsp?seq=<%=seq%>'">
+		<input type = "button" value = "글삭제">
+	<%} %>
+	</div>
+	
 </body>
 </html>

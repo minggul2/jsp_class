@@ -6,7 +6,6 @@
 	/*
 		id, name, password, gender, email1, email2, tel1, tel2, tel3, zipcode, addr1, addr2
 	*/
-		
 
 %>
 <!DOCTYPE html>

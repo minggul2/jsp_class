@@ -60,7 +60,7 @@
 			<%for(BoardDTO boardDTO : list){ %>
 			<tr>
 				<td class = "board"><%=boardDTO.getSeq() %></td>
-				<td class = "board"><a id = "subjectA" href = "#" onclick = "isLogin('<%=id %>', '<%=boardDTO.getSeq()%>', '<%=pg%>')"><%=boardDTO.getSubject() %></a></td>
+				<td class = "board"><a id = "subjectA" href = "#" onclick = "isLogin('<%=id %>', <%=boardDTO.getSeq()%>, <%=pg%>)"><%=boardDTO.getSubject() %></a></td>
 				<td class = "board"><%=boardDTO.getId() %></td>
 				<td class = "board"><%=sdf.format(boardDTO.getLogtime())%></td>
 				<td class = "board"><%=boardDTO.getHit() %></td>

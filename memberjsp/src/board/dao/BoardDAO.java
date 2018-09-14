@@ -150,7 +150,7 @@ public static BoardDAO instance;
 		
 	}
 	
-	public BoardDTO getContent(int seq) {
+	public BoardDTO boardView(int seq) {
 		getConnection();
 		BoardDTO boardDTO = null;
 		String sql = "select * from board where seq = ?";
@@ -161,10 +161,19 @@ public static BoardDAO instance;
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				boardDTO = new BoardDTO();
-				boardDTO.setSubject(rs.getString("subject"));
+				boardDTO.setSeq(rs.getInt("seq"));
 				boardDTO.setId(rs.getString("id"));
-				boardDTO.setHit(rs.getInt("hit"));
+				boardDTO.setName(rs.getString("name"));
+				boardDTO.setEmail(rs.getString("email"));
+				boardDTO.setSubject(rs.getString("subject"));
 				boardDTO.setContent(rs.getString("content"));
+				boardDTO.setRef(rs.getInt("ref"));
+				boardDTO.setLev(rs.getInt("lev"));
+				boardDTO.setStep(rs.getInt("step"));
+				boardDTO.setPseq(rs.getInt("pseq"));
+				boardDTO.setReply(rs.getInt("reply"));
+				boardDTO.setHit(rs.getInt("hit"));
+				boardDTO.setLogtime(rs.getDate("logtime"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -180,7 +189,7 @@ public static BoardDAO instance;
 		return boardDTO;
 	}	 
 	
-	public void updateHit(int seq) {
+	public void hitUpdate(int seq) {
 		getConnection();
 		String sql = "update board set hit = hit+1 where seq = ?";
 		
@@ -199,6 +208,30 @@ public static BoardDAO instance;
 			}
 		}
 	}
+	
+	public void boardModify(String subject, String content, int seq) {
+		getConnection();
+		String sql = "update board set subject = ?, content = ?, logtime = sysdate where seq = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, subject);
+			pstmt.setString(2, content);
+			pstmt.setInt(3, seq);
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt!=null)pstmt.close();
+				if(conn!=null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }
 
 
