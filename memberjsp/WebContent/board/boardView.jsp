@@ -36,6 +36,8 @@
 	Cookie[] cookies = request.getCookies();		//쿠키받아옴
 	Cookie cookie = null;							//쿠키참조변수 만듬
 	
+	
+	
 	if(cookies != null){							//받아온 쿠키가 있다면 (같은사람이 게시글을 눌렀을경우)
 		for(int i = 0; i < cookies.length; i++){		//받아온 쿠키배열 for문
 			//if(cookies[i].getValue().equals(seq+"") && cookies[i].getComment().equals(id)){	//하나하나 비교하다가 쿠키이름이 글번호seq 일경우
@@ -46,6 +48,8 @@
 			}
 		}
 	}
+	
+	
 	
 	if(cookie == null){								//받다온 쿠키가 없다면 (처음 조회할 경우)
 		//cookie = new Cookie("hit", seq+"");			//
