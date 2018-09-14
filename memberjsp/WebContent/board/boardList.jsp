@@ -1,3 +1,4 @@
+<%@page import="board.bean.BoardPaging"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
@@ -7,24 +8,32 @@
     pageEncoding="UTF-8"%>
     
 <%
-	
 	//응답 : 테이블
 	int pg = Integer.parseInt(request.getParameter("pg"));
 
 	BoardDAO boardDAO = BoardDAO.getInstance();
-	
+
 	//1페이지당 5개씩
 	int endNum = pg * 5;
 	int startNum = endNum - 4;
 	
 	List<BoardDTO> list = boardDAO.getList(startNum, endNum);
-	int totalA = boardDAO.getBoardTotalA();//총글수
-	int totalP = (totalA+4)/5;//총페이지수
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
 	
 	String id = (String)session.getAttribute("memId");
-	System.out.println(id);
+	
+	int totalA = boardDAO.getBoardTotalA();
+	
+	BoardPaging boardPaging = new BoardPaging();
+	boardPaging.setCurrentPage(pg);
+	
+	boardPaging.setPageBlock(3);
+	boardPaging.setPageSize(5);
+	boardPaging.setTotalA(totalA);
+	boardPaging.makePagingHTML();
+	
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -37,7 +46,7 @@
 </head>
 <body>
 <div align = "center" >
-	<table border = "0" cellpadding = "5" cellspacing = "0" class = "line"  frame = "hsides" rules ="rows">
+	<table border = "0" cellpadding = "5" cellspacing = "0"  frame = "hsides" rules ="rows">
 	
 		<tr>
 			<th width = "100">글번호</th>
@@ -62,17 +71,12 @@
 	
 	<br><br>
 	
-	<%for(int i=1; i<=totalP; i++) { %>
-		<% if(i==pg){%>
-			[<a id=currentPaging href='boardList.jsp?pg=<%=i%>'><%=i%></a>]
-		<%}else{ %>
-			[<a id=paging href='boardList.jsp?pg=<%=i%>'><%=i %></a>]
-		<%} %>
-	<%} %>
 </div>
-<img style = "float : left; cursor: pointer;" src = "../image/aa.png" onclick = "location.href = '../main/index.jsp'">
-<div style = "float : left; border : 1px red solid; width : 600px; text-align : center;">asdsadsasad</div>
 
+<div align = "center">
+<img style = "float : center; cursor: pointer;" src = "../image/aa.png" onclick = "location.href = '../main/index.jsp'">
+<div style = "float : center; border : 1px red solid; width : 600px; text-align : center;" align = "center"><%=boardPaging.getPagingHTML() %></div>
+</div>
 <script src ="../js/board.js">
 	
 </script>

@@ -24,8 +24,22 @@ public class BoardPaging {
 		if(endPage > totalP) endPage = totalP;
 		
 		if(startPage > pageBlock) {
-			
+			pagingHTML.append("[<a id = 'paging' href = 'boardList.jsp?pg="+(startPage-1)+"'>이전</a>]");
 		}
+		
+		for(int i = startPage; i <= endPage; i++) {
+			if(currentPage == i) {
+				pagingHTML.append("[<a id = 'currentPage' href = 'boardList.jsp?pg="+i+"'>"+i+"</a>]");
+			}else {
+				pagingHTML.append("[<a id = 'paging' href = 'boardList.jsp?pg="+i+"'>"+i+"</a>]");
+			}
+		}
+		
+		if(endPage < totalP) {
+			pagingHTML.append("[<a id = 'paging' href = 'boardList.jsp?pg="+(endPage+1)+"'>다음</a>]");
+		}
+		
+		
 		
 		
 	}

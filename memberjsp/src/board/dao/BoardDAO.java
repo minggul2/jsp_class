@@ -149,4 +149,65 @@ public static BoardDAO instance;
 		return totalA;
 		
 	}
+	
+	public BoardDTO getContent(int seq) {
+		getConnection();
+		BoardDTO boardDTO = null;
+		String sql = "select * from board where seq = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, seq);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				boardDTO = new BoardDTO();
+				boardDTO.setSubject(rs.getString("subject"));
+				boardDTO.setId(rs.getString("id"));
+				boardDTO.setHit(rs.getInt("hit"));
+				boardDTO.setContent(rs.getString("content"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs!=null)rs.close();
+				if(pstmt!=null)pstmt.close();
+				if(conn!=null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return boardDTO;
+	}	 
+	
+	public void updateHit(int seq) {
+		getConnection();
+		String sql = "update board set hit = hit+1 where seq = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, seq);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt!=null)pstmt.close();
+				if(conn!=null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
