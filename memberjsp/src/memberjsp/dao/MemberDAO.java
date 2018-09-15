@@ -138,13 +138,15 @@ public static MemberDAO instance;
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				memberDTO.setName(rs.getString("id"));
+				memberDTO.setName(rs.getString("name"));
+				memberDTO.setId(rs.getString("id"));
 				memberDTO.setGender(rs.getString("gender"));
 				memberDTO.setEmail1(rs.getString("email1"));
 				memberDTO.setEmail2(rs.getString("email2"));
 				memberDTO.setTel1(rs.getString("tel1"));
 				memberDTO.setTel2(rs.getString("tel2"));
 				memberDTO.setTel3(rs.getString("tel3"));
+				memberDTO.setZipcode(rs.getString("zipcode"));
 				memberDTO.setAddr1(rs.getString("addr1"));
 				memberDTO.setAddr2(rs.getString("addr2"));
 			}
@@ -164,9 +166,9 @@ public static MemberDAO instance;
 		return memberDTO;
 	}
 	
-	public String login(String id, String password) {
+	public MemberDTO login(String id, String password) {
 		getConnection();
-		String name = null;
+		MemberDTO memberDTO = null;
 		String sql = "select * from member where id = ? and password = ?";
 		
 		try {
@@ -175,7 +177,19 @@ public static MemberDAO instance;
 			pstmt.setString(2, password);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				name = rs.getString("name");
+				memberDTO = new MemberDTO();
+				memberDTO.setName(rs.getString("name"));
+				memberDTO.setId(rs.getString("id"));
+				memberDTO.setPassword(rs.getString("password"));
+				memberDTO.setGender(rs.getString("gender"));
+				memberDTO.setEmail1(rs.getString("email1"));
+				memberDTO.setEmail2(rs.getString("email2"));
+				memberDTO.setTel1(rs.getString("tel1"));
+				memberDTO.setTel2(rs.getString("tel2"));
+				memberDTO.setTel3(rs.getString("tel3"));
+				memberDTO.setZipcode(rs.getString("zipcode"));
+				memberDTO.setAddr1(rs.getString("addr1"));
+				memberDTO.setAddr2(rs.getString("addr2"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -188,8 +202,8 @@ public static MemberDAO instance;
 				e.printStackTrace();
 			}
 		}
-		System.out.println(name);
-		return name;
+		
+		return memberDTO;
 	}
 	
 	public int write(MemberDTO memberDTO) {
