@@ -7,6 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import memberjsp.bean.MemberDTO;
 import memberjsp.bean.ZipcodeDTO;
 
@@ -22,38 +27,28 @@ public static MemberDAO instance;
 		return MemberDAO.instance;
 	}
 	
+	private DataSource ds;
 	
-	private String driver = "oracle.jdbc.driver.OracleDriver";
-	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	private String user = "dbdb";
-	private String password = "itbank";
 	
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
-	
 	public MemberDAO(){
-		try {
-			Class.forName(driver);
-		} catch (ClassNotFoundException e) {
+		 try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/oracle");		//Tomcat ¼³Á¤
+		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public void getConnection() {
-		try {
-			conn = DriverManager.getConnection(url, user, password);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		 
 	}
 	
 	public boolean isExitsId(String id) {
-		getConnection();
 		boolean check = false;
-		
 		String sql = "select id from member where id = ?";
+		
 		try {
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
@@ -73,7 +68,6 @@ public static MemberDAO instance;
 	}
 	
 	public ArrayList<ZipcodeDTO> getZipcodeList(String sido, String sigungu, String roadname){
-		getConnection();
 //		String sql = "";
 		ArrayList<ZipcodeDTO> list = new ArrayList<>();
 		/*
@@ -96,6 +90,7 @@ public static MemberDAO instance;
 				pstmt.setString(1, "%"+roadname+"%");
 			}else {
 			*/
+				conn = ds.getConnection();
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, "%"+sido+"%");
 				pstmt.setString(2, "%"+sigungu+"%");
@@ -130,10 +125,10 @@ public static MemberDAO instance;
 	}
 	
 	public MemberDTO getMember(String id) {
-		getConnection();
 		MemberDTO memberDTO = new MemberDTO();
 		String sql = "select * from member where id = ?";
 		try {
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
@@ -167,11 +162,11 @@ public static MemberDAO instance;
 	}
 	
 	public MemberDTO login(String id, String password) {
-		getConnection();
 		MemberDTO memberDTO = null;
 		String sql = "select * from member where id = ? and password = ?";
 		
 		try {
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setString(2, password);
@@ -208,11 +203,11 @@ public static MemberDAO instance;
 	
 	public int write(MemberDTO memberDTO) {
 		int su = 0;
-		getConnection();
 		
 		String sql = "insert into member values(?,?,?,?,?,?,?,?,?,?,?,?,sysdate)";
 		
 		try {
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, memberDTO.getName());
 			pstmt.setString(2, memberDTO.getId());

@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import board.bean.BoardDTO;
 import memberjsp.dao.MemberDAO;
 
@@ -24,11 +29,7 @@ public static BoardDAO instance;
 		return BoardDAO.instance;
 	}
 	
-	
-	private String driver = "oracle.jdbc.driver.OracleDriver";
-	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	private String user = "dbdb";
-	private String password = "itbank";
+	DataSource ds;
 	
 	private Connection conn;
 	private PreparedStatement pstmt;
@@ -36,27 +37,21 @@ public static BoardDAO instance;
 	
 	public BoardDAO(){
 		try {
-			Class.forName(driver);
-		} catch (ClassNotFoundException e) {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/oracle");
+		} catch (NamingException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public void getConnection() {
-		try {
-			conn = DriverManager.getConnection(url, user, password);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
 	}
 	
 	public int writeBoard(Map<String, String> map) {
-		getConnection();
 		int su = 0;
 		
 		//¿ø±Û ref = seq
 		String sql = "insert into board(seq, id, name, email, subject, content, ref) values(seq_board.nextval,?,?,?,?,?,seq_board.currval)";
 		try {
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, map.get("id"));
 			pstmt.setString(2, map.get("name"));
@@ -82,13 +77,13 @@ public static BoardDAO instance;
 	public List<BoardDTO> getList(int startNum, int endNum){
 		List<BoardDTO> list = new ArrayList<>();
 		BoardDTO boardDTO = null;
-		getConnection();
 		
 		String sql = "select * from "
 				+ "(select rownum rn, tt.* from "
 				+ "(select * from board order by ref desc, step asc) tt)"
 				+ " where rn >= ? and rn <= ?";
 		try {
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, startNum);
 			pstmt.setInt(2, endNum);
@@ -127,10 +122,10 @@ public static BoardDAO instance;
 	
 	public int getBoardTotalA() {
 		int totalA = 0;
-		getConnection();
 		String sql = "select count(*) from board";
 		
 		try {
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			rs.next();
@@ -151,11 +146,11 @@ public static BoardDAO instance;
 	}
 	
 	public BoardDTO boardView(int seq) {
-		getConnection();
 		BoardDTO boardDTO = null;
 		String sql = "select * from board where seq = ?";
 		
 		try {
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, seq);
 			rs = pstmt.executeQuery();
@@ -190,10 +185,10 @@ public static BoardDAO instance;
 	}	 
 	
 	public void hitUpdate(int seq) {
-		getConnection();
 		String sql = "update board set hit = hit+1 where seq = ?";
 		
 		try {
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, seq);
 			pstmt.executeUpdate();
@@ -210,10 +205,12 @@ public static BoardDAO instance;
 	}
 	
 	public void boardModify(String subject, String content, int seq) {
-		getConnection();
-		String sql = "update board set subject = ?, content = ?, logtime = sysdate where seq = ?";
+		String sql = "update board set subject = ?,"
+				+ " 					content = ?,"
+				+ " 					logtime = sysdate where seq = ?";
 		
 		try {
+			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, subject);
 			pstmt.setString(2, content);
