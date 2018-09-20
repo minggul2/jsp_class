@@ -5,8 +5,7 @@
     
 <%
 	int seq = Integer.parseInt(request.getParameter("seq"));
-	
-	
+	int pg = Integer.parseInt(request.getParameter("pg"));	
 
 	BoardDAO boardDAO = BoardDAO.getInstance();
 	BoardDTO boardDTO = boardDAO.boardView(seq);
@@ -26,7 +25,6 @@
     	outline-color: "red";
     	text-shadow: aqua;
     	text-transform: capitalize;
-    	
 	}
 </style>
 
@@ -34,18 +32,23 @@
 <title>Insert title here</title>
 </head>
 <body>
+<script>
 <% if(!boardDTO.getId().equals(id)){%>
-		<script>alert("작성자가아닙니다");</script>
+		alert("작성자가아닙니다");
 		
 		<%response.sendRedirect("boardList.jsp?pg=1");
 	}%>
+</script>
 
-	<form name = "boardWriteForm" method = "post" action = "boardModify.jsp">
+	<form name = "boardModifyForm" method = "post" action = "boardModify.jsp">
 	<table border = "1">
 		<tr>
 			<td class = "shows">제목</td>
-			<td><input type = "text" name = "subject" size = "30" value = <%=boardDTO.getSubject() %>><input type = "hidden" name = "seq" value = "<%=seq %>"></td>
-			
+			<td>
+				<input type = "text" name = "subject" size = "30" value = <%=boardDTO.getSubject() %>>
+				<input type = "hidden" name = "seq" value = "<%=seq %>">
+				<input type = "hidden" name = "pg" value = "<%=pg %>">
+			</td>
 		</tr>
 		<tr>
 			<td class = "shows">내용</td>

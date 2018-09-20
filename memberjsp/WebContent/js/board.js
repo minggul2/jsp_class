@@ -1,10 +1,10 @@
  function checkBoard(){
-	 if(document.boardWriteForm.subject.value == ""){
+	 if(document.forms[0].subject.value == ""){
 		 alert("제목을 입력하세요");
-	 }else if(document.boardWriteForm.content.value == ""){
+	 }else if(document.forms[0].content.value == ""){
 		 alert("내용을 입력하세요");
 	 }else{
-		 document.boardWriteForm.submit();
+		 document.forms[0].submit();
 	 }	
  }
  
@@ -21,7 +21,6 @@
 	 }else{
 		 location.href="boardView.jsp?seq="+seq+"&pg="+pg; 
 	 }
-	 
  }
  
  

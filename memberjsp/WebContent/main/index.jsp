@@ -22,6 +22,5 @@
 		<a href = "../board/boardWriteForm.jsp">글쓰기</a><br>
 	<%} %>
 	<a href = "../board/boardList.jsp?pg=1">목록</a><br>
-		
 </body>
 </html>
