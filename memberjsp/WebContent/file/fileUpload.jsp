@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="java.io.File"%>
 <%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
 <%@page import="com.oreilly.servlet.MultipartRequest"%>
@@ -36,8 +37,6 @@
 	if(file2 != null) fileSize2 = file2.length();
 	
 	
-	
-	
 %>
 <!DOCTYPE html>
 <html>
@@ -52,7 +51,7 @@
 		<li>제 목 : <%=subject %><br></li>
 		<li>내 용 : <pre><%=content %></pre><br></li>
 		-----------------------------------------------
-		<li>파 일 : <a href = "fileDownload.jsp?fileName=<%=originalFileName1%>"><%=originalFileName1 %></a><br></li>
+		<li>파 일 : <a href = "fileDownload.jsp?fileName=<%=URLEncoder.encode(originalFileName1, "UTF-8")%>"><%=originalFileName1 %></a><br></li>
 		<li>파 일 : <%=fileName1 %><br></li>
 		<li>크 기 : <%=fileSize1 %><br>
 		-----------------------------------------------
